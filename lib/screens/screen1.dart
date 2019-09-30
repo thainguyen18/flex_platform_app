@@ -22,20 +22,73 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
-class Screen1 extends StatelessWidget {
+class Screen1 extends StatefulWidget {
+  @override
+  _Screen1State createState() => _Screen1State();
+}
+
+class _Screen1State extends State<Screen1> {
+  double _currentValue = 0.0;
+  bool _currentSwitchValue = true;
+
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: Container(
-          alignment: Alignment.center,
-          height: 300,
-          width: 300,
-          child: Text(
-            "Screen 1",
-            style: TextStyle(color: Colors.white, fontSize: 30),
+    return Column(
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Expanded(
+                flex: 1,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: PlatformSlider(
+                    min: 0.0,
+                    max: 100.0,
+                    value: _currentValue,
+                    onChanged: (value) {
+                      setState(() {
+                        _currentValue = value;
+                      });
+                    },
+                  ),
+                ),
+              ),
+            ],
           ),
-          color: Colors.green,
-        ));
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: PlatformSwitch(
+              value: _currentSwitchValue,
+              onChanged: (value) {
+                setState(() {
+                  _currentSwitchValue = value;
+                });
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: PlatformTextField(
+              keyboardType: TextInputType.text,
+              android: (_) => MaterialTextFieldData(
+                decoration: InputDecoration(labelText: 'Text Field'),
+              ),
+              ios: (_) => CupertinoTextFieldData(
+                placeholder: 'Text Field',
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: PlatformButton(
+              onPressed: () {},
+              child: Text('Button'),
+              android: (_) => MaterialRaisedButtonData(),
+              ios: (_) => CupertinoButtonData(),
+            ),
+          ),
+        ]);
   }
 }
